@@ -31,7 +31,6 @@ const NavbarLinks = ({ data }: CategoryProps) => {
 					)}
 				>
 					{route.label}
-					<p>sample</p>
 				</Link>
 			))}
 		</nav>
