@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
@@ -10,6 +11,7 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from '@/components/ui/popover';
+import { MoreVertical, X } from 'lucide-react';
 
 interface CategoryProps {
 	data: Category[];
@@ -17,6 +19,7 @@ interface CategoryProps {
 
 const NavbarLinks = ({ data }: CategoryProps) => {
 	const pathname = usePathname();
+	const [isOpen, setIsOpen] = useState(false);
 
 	// Generate routes dynamically
 	const routes = data.map((route) => ({
@@ -33,22 +36,27 @@ const NavbarLinks = ({ data }: CategoryProps) => {
 					<Button
 						variant='ghost'
 						className='md:hidden text-gray-300 hover:bg-gray-900 hover:text-white'
+						onClick={() => setIsOpen(!isOpen)} // Toggle state on click
 					>
-						Menu
+						{isOpen ? <X /> : <MoreVertical />}
 					</Button>
 				</PopoverTrigger>
-				<PopoverContent className='w-screen border-none  p-2 mt-10 bg-gray-900/95'>
+				<PopoverContent
+					className='w-screen border-none rounded-none p-2 mt-8 bg-gray-900/95'
+					onOpenAutoFocus={() => setIsOpen(true)} // Set open state
+					onCloseAutoFocus={() => setIsOpen(false)} // Reset on close
+				>
 					<nav className='flex flex-col space-y-2'>
 						{routes.map((route) => (
 							<Link
 								key={route.href}
 								href={route.href}
 								className={cn(
-									'block px-4 py-2 rounded-md hover:bg-gray-900 text-gray-500 hover:text-gray-300',
-									route.active && 'bg-blue-600 text-gray-300'
+									'block p-2 rounded-full w-fit text-gray-300',
+									route.active && 'bg-blue-600/90 text-gray-300'
 								)}
 							>
-								{route.label}
+								<p className='px-2'>{route.label}</p>
 							</Link>
 						))}
 					</nav>
@@ -62,8 +70,8 @@ const NavbarLinks = ({ data }: CategoryProps) => {
 						key={route.href}
 						href={route.href}
 						className={cn(
-							'px-3 py-2 rounded-md hover:bg-gray-700 hover:text-white',
-							route.active && 'bg-blue-600 text-white'
+							'px-6 py-1 rounded-full hover:bg-blue-600 tracking-widest',
+							route.active && 'bg-blue-600/90 text-white'
 						)}
 					>
 						{route.label}
