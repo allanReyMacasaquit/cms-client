@@ -2,17 +2,24 @@ export interface Dashboard {
 	id: string;
 	label: string;
 	imageUrl: string;
+	description: string;
 }
+
 export interface Category {
 	id: string;
 	name: string;
 	dashboard: Dashboard;
+	description: string;
 }
 
 export interface Product {
 	id: string;
+	categoryId: string;
+	imageUrl: string;
 	category: Category;
 	name: string;
+	description: string;
+	productName: string;
 	price: string;
 	isFeatured: boolean;
 	size: Size;
