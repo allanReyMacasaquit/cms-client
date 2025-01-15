@@ -8,9 +8,9 @@ import NavbarActions from './navbar-actions';
 const Navbar = async () => {
 	const categories = await getCategories();
 	return (
-		<div className='bg-gray-900 text-gray-300 py-8 px-5'>
+		<div className='bg-gray-900 text-gray-300 py-8 px-5 '>
 			<Container>
-				<div className='flex items-center'>
+				<div className='flex items-center p-4 rounded-full shadow-md border-none shadow-gray-300'>
 					<Link className='flex-1' href='/'>
 						<p>LOGO</p>
 					</Link>

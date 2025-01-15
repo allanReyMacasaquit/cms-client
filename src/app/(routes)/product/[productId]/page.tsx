@@ -1,7 +1,12 @@
 import getDashboard from '@/actions/get-dashboard';
+import { getProductColor } from '@/actions/get-product-color';
+import { getProductSize } from '@/actions/get-product-size';
 import { getProductsWithCategory } from '@/actions/getProductsWithCategory';
+import { Color, Size } from '@/app/types';
+import BackArrow from '@/components/back-arrow';
 import Container from '@/components/container';
 import Currency from '@/components/currency';
+import ProductGallery from '@/components/product-gallery';
 import { Button } from '@/components/ui/button';
 import {
 	Card,
@@ -11,7 +16,6 @@ import {
 	CardFooter,
 	CardDescription,
 } from '@/components/ui/card';
-import Image from 'next/image';
 
 interface ProductPageProps {
 	params: {
@@ -28,10 +32,12 @@ const ProductPage: React.FC<ProductPageProps> = async ({ params }) => {
 	); // Adjust this if needed
 
 	try {
-		// Fetch the products and categories
+		// Fetch the products, categories, and sizes
 		const productsWithCategory = await getProductsWithCategory(true);
-		const product = productsWithCategory.find((p) => p.id === productId);
+		const sizes = await getProductSize();
+		const colors = await getProductColor();
 
+		const product = productsWithCategory.find((p) => p.id === productId);
 		if (!product) {
 			return (
 				<div className='bg-white'>
@@ -44,11 +50,22 @@ const ProductPage: React.FC<ProductPageProps> = async ({ params }) => {
 			);
 		}
 
-		const productImages = product.images || [];
+		const size =
+			sizes.find((s: Size) => s.id === product.sizeId)?.value || 'Unknown';
+		const color =
+			colors.find((c: Color) => c.id === product.colorId)?.value || 'Unknown';
+
+		const productImages = product.images.map((image) => {
+			const imgColor =
+				colors.find((c: Color) => c.id === image.colorId)?.value || 'Unknown';
+			console.log(`Image URL: ${image.url}, Color: ${imgColor}`);
+			return { url: image.url, color: imgColor };
+		});
 
 		return (
 			<div className='bg-gray-50 min-h-screen py-10'>
 				<Container>
+					<BackArrow />
 					<Card className='max-w-4xl mx-auto md:shadow-lg border-none md:rounded-lg'>
 						<CardHeader className='p-6'>
 							<CardTitle className='text-3xl font-semibold text-gray-800'>
@@ -56,44 +73,30 @@ const ProductPage: React.FC<ProductPageProps> = async ({ params }) => {
 							</CardTitle>
 						</CardHeader>
 						<CardContent>
-							<div className='mb-8'>
-								{productImages.length > 0 ? (
-									productImages.map((image, index) => (
-										<div
-											key={index}
-											className='h-96 justify-center items-center flex md:rounded-lg overflow-hidden border-none shadow-lg'
-										>
-											<Image
-												src={image.url}
-												alt={`Product Image ${index + 1}`}
-												height={400}
-												width={400}
-												className='object-cover'
-											/>
-										</div>
-									))
-								) : (
-									<p className='text-gray-500 col-span-full'>
-										No images available for this product.
-									</p>
-								)}
-							</div>
+							<ProductGallery images={productImages} />
 							<div className='text-lg text-gray-800'>
 								<p className='mb-2'>
 									<strong>Category:</strong> {product.categoryName || 'N/A'}
 								</p>
-								<p className='mb-4'>
+								<p className='mb-2'>
 									<strong>Price:</strong> <Currency amount={product.price} />
 								</p>
+								<p className='mb-2'>
+									<strong>Size:</strong> {size}
+								</p>
+								<div className='flex items-center gap-x-4'>
+									<strong className=' text-black'>Color:</strong>
+									<div
+										className='h-6 w-6 rounded-full border border-gray-600'
+										style={{ backgroundColor: color }}
+									/>
+								</div>
 							</div>
 						</CardContent>
 
-						{/* Display the description fetched from the dashboard */}
 						<CardDescription className='px-6 pb-6'>
 							<p className='text-gray-600'>
-								{description
-									? description.description
-									: 'No description available.'}
+								{description.description || 'No description available.'}
 							</p>
 						</CardDescription>
 

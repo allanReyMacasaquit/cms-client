@@ -15,21 +15,21 @@ export interface Category {
 export interface Product {
 	id: string;
 	categoryId: string;
-	imageUrl: string;
-	category: Category;
+	category: string;
 	name: string;
-	description: string;
-	productName: string;
 	price: string;
+	description: string;
 	isFeatured: boolean;
-	size: Size;
-	color: Color;
+	sizeId: string;
+	colorId: string;
+	imageUrl: string;
 	images: Image[];
 }
 
 export interface Image {
 	id: string;
 	url: string;
+	colorId: string;
 }
 
 export interface Size {
