@@ -5,7 +5,7 @@ import ProductList from '@/components/product-list';
 
 export default async function Home() {
 	const productsWithCategory = await getProductsWithCategory(true);
-	const dashboard = await getDashboard('d3ac5144-1ca6-4e01-a6f3-a0667b9e0d67');
+	const dashboard = await getDashboard(process.env.NEXT_PUBLIC_DASHBOARD_ID!);
 
 	return (
 		<div>

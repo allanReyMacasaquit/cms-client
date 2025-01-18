@@ -7,13 +7,15 @@ import { ArrowLeft } from 'lucide-react';
 const BackArrow = () => {
 	const router = useRouter();
 	return (
-		<Button
-			onClick={() => router.push('/')}
-			variant={'outline'}
-			className='rounded-full bg-blue-200 hover:bg-blue-200/80 ml-4 md:ml-0'
-		>
-			<ArrowLeft className='max-w-2xl' />
-		</Button>
+		<div className='mx-4'>
+			<Button
+				onClick={() => router.push('/')}
+				variant={'outline'}
+				className='rounded-full bg-blue-200 hover:bg-blue-200/80'
+			>
+				<ArrowLeft />
+			</Button>
+		</div>
 	);
 };
 export default BackArrow;

@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { Button } from './ui/button';
 
 interface ProductGalleryProps {
-	images: { url: string; color: string }[];
+	images: { url: string }[];
 }
 
 const ProductGallery: React.FC<ProductGalleryProps> = ({ images }) => {

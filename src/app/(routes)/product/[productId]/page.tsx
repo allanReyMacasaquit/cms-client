@@ -56,10 +56,7 @@ const ProductPage: React.FC<ProductPageProps> = async ({ params }) => {
 			colors.find((c: Color) => c.id === product.colorId)?.value || 'Unknown';
 
 		const productImages = product.images.map((image) => {
-			const imgColor =
-				colors.find((c: Color) => c.id === image.colorId)?.value || 'Unknown';
-			console.log(`Image URL: ${image.url}, Color: ${imgColor}`);
-			return { url: image.url, color: imgColor };
+			return { url: image.url };
 		});
 
 		return (

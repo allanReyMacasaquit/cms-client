@@ -17,12 +17,12 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
 	const router = useRouter();
-	const firstImage = data.images[0]; // Access the first image
+	const firstImage = data.images?.[0]; // Safely access the first image
 
 	return (
 		<div className='group cursor-pointer md:rounded-xl shadow-2xl p-3 space-y-4'>
 			{/* Product Image */}
-			{firstImage && (
+			{firstImage ? (
 				<div className='aspect-video w-full rounded-xl relative'>
 					<Image
 						src={firstImage.url}
@@ -53,15 +53,20 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
 						</div>
 					</div>
 				</div>
+			) : (
+				// Fallback content if no image is available
+				<div className='aspect-video w-full rounded-xl bg-gray-100 flex items-center justify-center'>
+					<p className='text-gray-500'>No Image Available</p>
+				</div>
 			)}
 
 			{/* Product Info */}
 			<div className='text-center'>
 				<h3 className='text-lg font-semibold truncate'>{data.name}</h3>
 				<Currency amount={data.price} currency='CAD' />
-				<p className='text-sm text-gray-400'>
+				{/* <p className='text-sm text-gray-400'>
 					{data.categoryName || 'Uncategorized'}
-				</p>
+				</p> */}
 			</div>
 		</div>
 	);
